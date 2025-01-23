@@ -49,8 +49,6 @@ class CalcFrame extends JFrame {
 
         double n1;
         double n2;
-        char operator;
-
 
 
         int posOperator = subString.indexOf("*");
@@ -180,71 +178,219 @@ class CalcFrame extends JFrame {
         return helperSb;
     }
 
+    public String findMin(int h1, int h2, int h3){
+        int min = Integer.MAX_VALUE;
+        String result = "";
+
+        if (h1 >= 0 && h1 < min) {
+            min = h1;
+            result = "+";
+        }
+        if (h2 >= 0 && h2 < min) {
+            min = h2;
+            result = "*";
+        }
+        if (h3 >= 0 && h3 < min) {
+            min = h3;
+            result = "/";
+        }
+
+        return result;
+    }
+
     public StringBuilder partm(StringBuilder helperSb){
-        int posm = helperSb.indexOf("-");
-        int posPrecedente = posm-1;
+        if ((helperSb.indexOf("-") != -1)&&(helperSb.indexOf("*") != -1 || helperSb.indexOf("/") != -1 || helperSb.indexOf("+") != -1)){
+            String min = findMin(helperSb.indexOf("+"), helperSb.indexOf("*"), helperSb.indexOf("/"));
 
-        if (posPrecedente == -1){
-            posPrecedente = 0;
-        }
+            if (min == "+"){
+                int posm = helperSb.indexOf("+");
+                int posPrecedente = 0;
 
-        while ( (helperSb.charAt(posPrecedente) != '*') && (helperSb.charAt(posPrecedente) != '+') && (helperSb.charAt(posPrecedente) != '-') && (helperSb.charAt(posPrecedente) != '/')){
-            if (posPrecedente == 0){
-                break;
+                int posSuccessiva = posm+1;
+                while ( (helperSb.charAt(posSuccessiva) != '*') && (helperSb.charAt(posSuccessiva) != '+') && (helperSb.charAt(posSuccessiva) != '-') && (helperSb.charAt(posSuccessiva) != '/')){
+                    if (posSuccessiva == helperSb.length()-1){
+                        break;
+                    }else {
+                        posSuccessiva++;
+                    }
+                }
+                if (posSuccessiva != helperSb.length()-1){
+                    posSuccessiva--;
+                }
+                String subString;
+
+                if (helperSb.indexOf(".")==-1){
+                    posSuccessiva++;
+                    subString = helperSb.substring(posPrecedente, posSuccessiva);
+                }else {
+                    subString = helperSb.substring(posPrecedente, posSuccessiva+1);
+                }
+
+
+                double n1;
+                double n2;
+                char operator;
+
+                int posOperator = subString.indexOf("+");
+
+
+                n1 =Double.parseDouble(subString.substring(0, posOperator));
+                n2 =Double.parseDouble(subString.substring(posOperator+1, subString.length()));
+
+
+                double  nTot = n1 + n2;
+
+                String result = String.valueOf(nTot);
+                String replace = helperSb.toString();
+                replace = replace.replace(subString, result);
+                helperSb = new StringBuilder(replace);
+            }else if (min == "*"){
+                int posm = helperSb.indexOf("*");
+                int posPrecedente = 0;
+
+                int posSuccessiva = posm+1;
+                while ( (helperSb.charAt(posSuccessiva) != '*') && (helperSb.charAt(posSuccessiva) != '+') && (helperSb.charAt(posSuccessiva) != '-') && (helperSb.charAt(posSuccessiva) != '/')){
+                    if (posSuccessiva == helperSb.length()-1){
+                        break;
+                    }else {
+                        posSuccessiva++;
+                    }
+                }
+                if (posSuccessiva != helperSb.length()-1){
+                    posSuccessiva--;
+                }
+                String subString;
+
+                if (helperSb.indexOf(".")==-1){
+                    posSuccessiva++;
+                    subString = helperSb.substring(posPrecedente, posSuccessiva);
+                }else {
+                    subString = helperSb.substring(posPrecedente, posSuccessiva+1);
+                }
+
+
+                double n1;
+                double n2;
+                char operator;
+
+                int posOperator = subString.indexOf("*");
+
+
+                n1 =Double.parseDouble(subString.substring(0, posOperator));
+                n2 =Double.parseDouble(subString.substring(posOperator+1, subString.length()));
+
+
+                double  nTot = n1 * n2;
+
+                String result = String.valueOf(nTot);
+                String replace = helperSb.toString();
+                replace = replace.replace(subString, result);
+                helperSb = new StringBuilder(replace);
             }else {
-                posPrecedente--;
-            }
-        }
-        if (posPrecedente != 0){
-            posPrecedente++;
-        }
+                int posm = helperSb.indexOf("/");
+                int posPrecedente = 0;
 
-        int posSuccessiva = posm+1;
-        while ( (helperSb.charAt(posSuccessiva) != '*') && (helperSb.charAt(posSuccessiva) != '+') && (helperSb.charAt(posSuccessiva) != '-') && (helperSb.charAt(posSuccessiva) != '/')){
-            if (posSuccessiva == helperSb.length()-1){
-                break;
-            }else {
-                posSuccessiva++;
-            }
-        }
-        if (posSuccessiva != helperSb.length()-1){
-            posSuccessiva--;
-        }
-        String subString;
+                int posSuccessiva = posm+1;
+                while ( (helperSb.charAt(posSuccessiva) != '*') && (helperSb.charAt(posSuccessiva) != '+') && (helperSb.charAt(posSuccessiva) != '-') && (helperSb.charAt(posSuccessiva) != '/')){
+                    if (posSuccessiva == helperSb.length()-1){
+                        break;
+                    }else {
+                        posSuccessiva++;
+                    }
+                }
+                if (posSuccessiva != helperSb.length()-1){
+                    posSuccessiva--;
+                }
+                String subString;
 
-        if (helperSb.indexOf(".")==-1){
-            posSuccessiva++;
-            subString = helperSb.substring(posPrecedente, posSuccessiva);
+                if (helperSb.indexOf(".")==-1){
+                    posSuccessiva++;
+                    subString = helperSb.substring(posPrecedente, posSuccessiva);
+                }else {
+                    subString = helperSb.substring(posPrecedente, posSuccessiva+1);
+                }
+
+
+                double n1;
+                double n2;
+                char operator;
+
+                int posOperator = subString.indexOf("/");
+
+
+                n1 =Double.parseDouble(subString.substring(0, posOperator));
+                n2 =Double.parseDouble(subString.substring(posOperator+1, subString.length()));
+
+
+                double  nTot = n1 / n2;
+
+                String result = String.valueOf(nTot);
+                String replace = helperSb.toString();
+                replace = replace.replace(subString, result);
+                helperSb = new StringBuilder(replace);
+            }
+
         }else {
-            subString = helperSb.substring(posPrecedente, posSuccessiva+1);
+            int posm = helperSb.indexOf("-");
+            int posPrecedente = posm-1;
+
+            if (posPrecedente == -1){
+                posPrecedente = 0;
+            }
+
+            while ( (helperSb.charAt(posPrecedente) != '*') && (helperSb.charAt(posPrecedente) != '+') && (helperSb.charAt(posPrecedente) != '-') && (helperSb.charAt(posPrecedente) != '/')){
+                if (posPrecedente == 0){
+                    break;
+                }else {
+                    posPrecedente--;
+                }
+            }
+            if (posPrecedente != 0){
+                posPrecedente++;
+            }
+
+            int posSuccessiva = posm+1;
+            while ( (helperSb.charAt(posSuccessiva) != '*') && (helperSb.charAt(posSuccessiva) != '+') && (helperSb.charAt(posSuccessiva) != '-') && (helperSb.charAt(posSuccessiva) != '/')){
+                if (posSuccessiva == helperSb.length()-1){
+                    break;
+                }else {
+                    posSuccessiva++;
+                }
+            }
+            if (posSuccessiva != helperSb.length()-1){
+                posSuccessiva--;
+            }
+            String subString;
+
+            if (helperSb.indexOf(".")==-1){
+                posSuccessiva++;
+                subString = helperSb.substring(posPrecedente, posSuccessiva);
+            }else {
+                subString = helperSb.substring(posPrecedente, posSuccessiva+1);
+            }
+
+
+            double n1;
+            double n2;
+            char operator;
+
+            int posOperator = subString.indexOf("-");
+
+
+            n1 =Double.parseDouble(subString.substring(0, posOperator));
+            n2 =Double.parseDouble(subString.substring(posOperator+1, subString.length()));
+
+
+            double  nTot = n1 - n2;
+
+            String result = String.valueOf(nTot);
+            String replace = helperSb.toString();
+            replace = replace.replace(subString, result);
+            helperSb = new StringBuilder(replace);
         }
-
-
-        int a = subString.length();
-
-        double n1;
-        double n2;
-        char operator;
-
-        int posOperator = subString.indexOf("-");
-
-
-        n1 =Double.parseDouble(subString.substring(0, posOperator));
-        n2 =Double.parseDouble(subString.substring(posOperator+1, subString.length()));
-
-
-        double  nTot = n1 - n2;
-
-        String result = String.valueOf(nTot);
-        String replace = helperSb.toString();
-        replace = replace.replace(subString, result);
-        helperSb = new StringBuilder(replace);
         return helperSb;
     }
 
-//    public boolean checkForWhile(StringBuilder helperSb){
-//
-//    };
 
     public CalcFrame(){
         super("calcBase");
@@ -389,16 +535,34 @@ class CalcFrame extends JFrame {
                 String helper = rigaDiTesto1.getText();
                 StringBuilder helperSb = new StringBuilder(helper);
                 while (helperSb.indexOf("*") != -1 || helperSb.indexOf("+") != -1 || helperSb.indexOf("-") != -1 || helperSb.indexOf("/") != -1 ){// controlla che non ci siano piu operatori
+
+                    if (helperSb.indexOf("-") == 0 && ( helperSb.indexOf("*") == -1 && helperSb.indexOf("+") == -1 && helperSb.indexOf("/") == -1 )){
+                        break;
+                    }
+
+                    if (helperSb.indexOf("+") == 0 && ( helperSb.indexOf("*") == -1 && helperSb.indexOf("-") == -1 && helperSb.indexOf("/") == -1 )) {
+                        break;
+                    }
+
                     while (helperSb.indexOf("*") != -1 || helperSb.indexOf("/") != -1){// prima * e /
+
+                        if (helperSb.indexOf("-") == 0){
+                            helperSb = partm(helperSb);
+                            break;
+                        }
+
                         if (helperSb.indexOf("*")<helperSb.indexOf("/")){
+
                             if (helperSb.indexOf("*") != -1) {
                                 helperSb = partx(helperSb);
                             }   if (helperSb.indexOf("/") != -1) {
                                 helperSb = partd(helperSb);
                             }
+
                         } else if (helperSb.indexOf("*") == helperSb.indexOf("/")) {
 
                         }else{
+
                             if (helperSb.indexOf("/") != -1){
                                 helperSb = partd(helperSb);
                             }  if (helperSb.indexOf("*") != -1) {
@@ -407,22 +571,34 @@ class CalcFrame extends JFrame {
                         }
                     }
 
-                    if (helperSb.indexOf("+")<helperSb.indexOf("-")){
-                        if (helperSb.indexOf("+") != -1){
-                            helperSb = partp(helperSb);
-                        }  if (helperSb.indexOf("-") != -1) {
-                            helperSb = partm(helperSb);
-                        }
-                    } else if (helperSb.indexOf("+") == helperSb.indexOf("-")) {
+                    while (helperSb.indexOf("-") != -1 || helperSb.indexOf("+") != -1){
 
-                    }else{
-                        if (helperSb.indexOf("-") != -1){
-                            helperSb = partm(helperSb);
-                        }  if (helperSb.indexOf("+") != -1) {
-                            helperSb = partp(helperSb);
+                        if (helperSb.indexOf("-") == 0 && ( helperSb.indexOf("*") == -1 && helperSb.indexOf("+") == -1 && helperSb.indexOf("/") == -1 )){
+                            break;
                         }
+
+                        if (helperSb.indexOf("+")<helperSb.indexOf("-")){
+
+                            if (helperSb.indexOf("+") != -1){
+                                helperSb = partp(helperSb);
+                                break;
+                            }  if (helperSb.indexOf("-") != -1) {
+                                helperSb = partm(helperSb);
+                                break;
+                            }
+                        } else if (helperSb.indexOf("+") == helperSb.indexOf("-")) {
+
+                        }else{
+                            if (helperSb.indexOf("-") != -1){
+                                helperSb = partm(helperSb);
+                                break;
+                            }  if (helperSb.indexOf("+") != -1) {
+                                helperSb = partp(helperSb);
+                                break;
+                            }
+                        }
+
                     }
-
                 }
                 rigaDiTesto1.setText(helperSb.toString());
             }
